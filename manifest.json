@@ -1,0 +1,134 @@
+{
+    "schema": 1,
+    "stand": "2026-10-23",
+    "_hinweis": "Von uns festgelegte Versionen aller Pakete, die eine Interlake-Installation braucht. Gelesen von install_production.ps1 (Interlake-Repo). Jede Datei wird nach dem Download per SHA-256 geprueft; urls werden der Reihe nach versucht (zuerst unser Spiegel, dann der Anbieter). Neue Version: Datei als Release-Asset in dieses Repo laden (falls gespiegelt), Eintrag hier anpassen, festgelegt_am und grund nachfuehren, zuerst auf dem Testrechner pruefen.",
+    "vc_redist": {
+        "mindestversion": "14.51.36247.0",
+        "url": "https://aka.ms/vc14/vc_redist.x64.exe",
+        "grund": "Apache Lounge baut seit 2026 mit Visual Studio 2026 (VS18) und verlangt mindestens 14.51.36247"
+    },
+    "komponenten": {
+        "php": {
+            "standard_reihe": "8.3",
+            "reihen": {
+                "8.3": {
+                    "version": "8.3.36",
+                    "datei": "php-8.3.36-nts-Win32-vs16-x64.zip",
+                    "urls": [
+                        "https://downloads.php.net/~windows/releases/php-8.3.36-nts-Win32-vs16-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.3.36-nts-Win32-vs16-x64.zip"
+                    ],
+                    "sha256": "3c9242622c7402b47c38d2ec2ed779cef3a290fd6f2bde6c35f9c482699e7900",
+                    "festgelegt_am": "2026-10-22",
+                    "grund": "Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                },
+                "8.4": {
+                    "version": "8.4.27",
+                    "datei": "php-8.4.27-nts-Win32-vs17-x64.zip",
+                    "urls": [
+                        "https://downloads.php.net/~windows/releases/php-8.4.27-nts-Win32-vs17-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.4.27-nts-Win32-vs17-x64.zip"
+                    ],
+                    "sha256": "93bd8a815a52156606fb906d0573437908c61f96e2cc52c03a51e36a41bf5236",
+                    "festgelegt_am": "2026-10-22",
+                    "grund": "Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                },
+                "8.5": {
+                    "version": "8.5.12",
+                    "datei": "php-8.5.12-nts-Win32-vs17-x64.zip",
+                    "urls": [
+                        "https://downloads.php.net/~windows/releases/php-8.5.12-nts-Win32-vs17-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.5.12-nts-Win32-vs17-x64.zip"
+                    ],
+                    "sha256": "2ab242af38d76bdf417cde5ec048b1bcd76a5a40f39a3d15d5f046f38571c477",
+                    "festgelegt_am": "2026-10-22",
+                    "grund": "Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                }
+            }
+        },
+        "apache": {
+            "version": "2.4.69",
+            "datei": "httpd-2.4.69-261002-Win64-VS18.zip",
+            "urls": [
+                "https://github.com/furrerservices/interlake-stack/releases/download/pakete-2026-10-23/httpd-2.4.69-261002-Win64-VS18.zip",
+                "https://www.apachelounge.com/download/VS18/binaries/httpd-2.4.69-261002-Win64-VS18.zip"
+            ],
+            "sha256": "9f1f93cab9a0c6dc5e628aa640784bb30347f93fcd01b46a4c0d6b5ba76bf4e2",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; Pruefsumme stimmt mit der .txt von Apache Lounge ueberein. Gespiegelt, weil Apache Lounge alte Builds von der Seite nimmt."
+        },
+        "mod_fcgid": {
+            "version": "2.3.10",
+            "datei": "mod_fcgid-2.3.10-win64-VS18.zip",
+            "urls": [
+                "https://github.com/furrerservices/interlake-stack/releases/download/pakete-2026-10-23/mod_fcgid-2.3.10-win64-VS18.zip",
+                "https://www.apachelounge.com/download/VS18/modules/mod_fcgid-2.3.10-win64-VS18.zip"
+            ],
+            "sha256": "a92808ef3069366c8fcc939f5449f119ed4f0e37eda5575d1fe265e6937ab88a",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; Apache Lounge veroeffentlicht fuer Module keine Pruefsumme (beim ersten Download gemessen). Gespiegelt wie Apache."
+        },
+        "mariadb": {
+            "version": "12.3.3",
+            "datei": "mariadb-12.3.3-winx64.msi",
+            "urls": [
+                "https://archive.mariadb.org/mariadb-12.3.3/winx64-packages/mariadb-12.3.3-winx64.msi"
+            ],
+            "sha256": "811a38a862c1c55325b6ba8a757b381923e51dee4fe3cde95887b0ae2490c02d",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; LTS-Reihe 12.3 (Support bis 2029-06). Pruefsumme aus der MariaDB-Download-API, archive.mariadb.org ist dauerhaft."
+        },
+        "nssm": {
+            "version": "2.24",
+            "datei": "nssm-2.24.zip",
+            "exe_im_archiv": "nssm-2.24/win64/nssm.exe",
+            "urls": [
+                "https://github.com/furrerservices/interlake-stack/releases/download/pakete-2026-10-23/nssm-2.24.zip",
+                "https://nssm.cc/release/nssm-2.24.zip"
+            ],
+            "sha256": "727d1e42275c605e0f04aba98095c38a8e1e46def453cdffce42869428aa6743",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; nssm.cc ist zeitweise nicht erreichbar (503 am 2026-10-23), daher gespiegelt. Ersatz durch WinSW geplant."
+        },
+        "mingit": {
+            "version": "2.56.0.3",
+            "datei": "MinGit-2.56.0.3-64-bit.zip",
+            "urls": [
+                "https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.3/MinGit-2.56.0.3-64-bit.zip"
+            ],
+            "sha256": "2e5619966e588fde5f8122c5557cad50c0fbafcaed736689f40ec1dfb1d78ea7",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; nur geladen, wenn auf dem Server kein git im PATH ist."
+        },
+        "composer": {
+            "version": "2.10.3",
+            "datei": "composer.phar",
+            "urls": [
+                "https://getcomposer.org/download/2.10.3/composer.phar"
+            ],
+            "sha256": "7a2d379d5b8ffdaa028580ef26494c36d2feef4b178d3dd1473a4dbc5e17c8d6",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; Pruefsumme stimmt mit composer.phar.sha256sum von getcomposer.org ueberein."
+        },
+        "cacert": {
+            "version": "2026-10-20",
+            "datei": "cacert-2026-10-20.pem",
+            "urls": [
+                "https://curl.se/ca/cacert-2026-10-20.pem"
+            ],
+            "sha256": "796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; Mozilla-CA-Buendel vom curl-Projekt (datierte Datei bleibt dauerhaft verfuegbar)."
+        },
+        "mkcert": {
+            "version": "1.4.4",
+            "datei": "mkcert-v1.4.4-windows-amd64.exe",
+            "urls": [
+                "https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-windows-amd64.exe"
+            ],
+            "sha256": "d2660b50a9ed59eada480750561c96abc2ed4c9a38c6a24d93e30e0977631398",
+            "festgelegt_am": "2026-10-23",
+            "grund": "Erstaufnahme; letzte Version (2022). Ersatz durch eigene CA in Interlake geplant."
+        }
+    }
+}
