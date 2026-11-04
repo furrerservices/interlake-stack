@@ -14,19 +14,19 @@ $bericht = Join-Path $ErgebnisOrdner "bericht.md"
 $auto = $env:AUTO_UEBERNEHMEN -eq "ja"
 $repo = $env:GITHUB_REPOSITORY
 
-function Gh([string[]]$Argumente) {
+function Gh-Aufruf([string[]]$Argumente) {
     $aus = & gh @Argumente 2>&1 | ForEach-Object { "$_" }
     if ($LASTEXITCODE -ne 0) { throw "gh $($Argumente -join ' ') fehlgeschlagen: $($aus -join ' ')" }
     return ($aus -join "`n")
 }
-function Git([string[]]$Argumente) {
+function Git-Aufruf([string[]]$Argumente) {
     & git @Argumente
     if ($LASTEXITCODE -ne 0) { throw "git $($Argumente -join ' ') fehlgeschlagen" }
 }
 # Auch geschlossene zaehlen: eine fehlgeschlagene Version wird nur einmal gemeldet,
 # nicht nach dem Schliessen jeden Tag neu.
 function Issue-Gibt-Es([string]$Titel) {
-    $liste = Gh @("issue", "list", "--state", "all", "--limit", "200", "--json", "title") | ConvertFrom-Json
+    $liste = Gh-Aufruf @("issue", "list", "--state", "all", "--limit", "200", "--json", "title") | ConvertFrom-Json
     return @($liste | Where-Object { $_.title -eq $Titel }).Count -gt 0
 }
 
@@ -43,13 +43,13 @@ if ($zus.geaendert) {
     $info = Join-Path $ErgebnisOrdner "info.md"
 
     if ($auto) {
-        Git @("add", "manifest.json")
-        Git @("commit", "-q", "-m", $nachricht)
-        Git @("push", "origin", "HEAD:main")
+        Git-Aufruf @("add", "manifest.json")
+        Git-Aufruf @("commit", "-q", "-m", $nachricht)
+        Git-Aufruf @("push", "origin", "HEAD:main")
         $text = "Neue Versionen sind in ``manifest.json`` festgelegt und gelten ab der naechsten taeglichen Pruefung bei allen Installationen.`n`n" + (Get-Content $bericht -Raw) + "`n@furrerservices (nur zur Info, nichts zu tun)"
         [IO.File]::WriteAllText($info, $text)
-        $url = Gh @("issue", "create", "--title", "Uebernommen: $($zus.titel)", "--body-file", $info)
-        Gh @("issue", "close", $url) | Out-Null
+        $url = Gh-Aufruf @("issue", "create", "--title", "Uebernommen: $($zus.titel)", "--body-file", $info)
+        Gh-Aufruf @("issue", "close", $url) | Out-Null
         Write-Host "Auf main uebernommen: $($zus.titel)"
     } else {
         $zweig = $zus.zweig
@@ -57,21 +57,21 @@ if ($zus.geaendert) {
         if ($vorhanden) {
             Write-Host "Zweig $zweig existiert schon (Pull Request offen oder abgelehnt) - nichts zu tun."
         } else {
-            Git @("checkout", "-q", "-b", $zweig)
-            Git @("add", "manifest.json")
-            Git @("commit", "-q", "-m", $nachricht)
-            Git @("push", "-q", "origin", $zweig)
+            Git-Aufruf @("checkout", "-q", "-b", $zweig)
+            Git-Aufruf @("add", "manifest.json")
+            Git-Aufruf @("commit", "-q", "-m", $nachricht)
+            Git-Aufruf @("push", "-q", "origin", $zweig)
             $text = (Get-Content $bericht -Raw) + "`nMergen = Version festlegen. Danach wie bisher in ``stack_versionen.json`` (Interlake-Repo) nachfuehren, bis Interlake die Version selbst einspielt (briefing 225, Etappe 2).`n`n@furrerservices"
             [IO.File]::WriteAllText($info, $text)
             try {
-                $url = Gh @("pr", "create", "--base", "main", "--head", $zweig, "--title", $zus.titel, "--body-file", $info)
+                $url = Gh-Aufruf @("pr", "create", "--base", "main", "--head", $zweig, "--title", $zus.titel, "--body-file", $info)
                 Write-Host "Pull Request: $url"
             } catch {
                 # Repo-Einstellung "Allow GitHub Actions to create pull requests" fehlt -> Issue mit Link
                 Write-Host "Pull Request nicht moeglich ($($_.Exception.Message)) - lege Issue an."
                 $text += "`n`nPull Request von Hand erstellen: https://github.com/$repo/compare/main...$zweig"
                 [IO.File]::WriteAllText($info, $text)
-                Gh @("issue", "create", "--title", "Neue Version: $($zus.titel)", "--body-file", $info) | Out-Null
+                Gh-Aufruf @("issue", "create", "--title", "Neue Version: $($zus.titel)", "--body-file", $info) | Out-Null
             }
         }
     }
@@ -84,6 +84,6 @@ foreach ($f in @($zus.fehler)) {
     $text = "Die Version wurde **nicht** festgelegt, ``manifest.json`` ist unveraendert. Kein Zeitdruck: alle Installationen laufen mit der bisherigen Version weiter.`n`n``````n$f`n```````n`nLauf: https://github.com/$repo/actions/runs/$env:GITHUB_RUN_ID`n`n@furrerservices"
     $datei = Join-Path $ErgebnisOrdner "fehler.md"
     [IO.File]::WriteAllText($datei, $text)
-    Gh @("issue", "create", "--title", $titel, "--body-file", $datei) | Out-Null
+    Gh-Aufruf @("issue", "create", "--title", $titel, "--body-file", $datei) | Out-Null
     Write-Host "Issue angelegt: $titel"
 }
