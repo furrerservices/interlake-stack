@@ -1,7 +1,7 @@
 # ergebnis_melden.ps1 - Ergebnis von php_pruefen.ps1 im GitHub-Lauf umsetzen.
 #
 #   geaendert + AUTO_UEBERNEHMEN=ja -> Commit auf main + Info-Issue (sofort geschlossen, nur fuer die Mail)
-#   geaendert + sonst               -> Zweig auto/php-<versionen> + Pull Request (nur einmal je Version)
+#   geaendert + sonst oder immer_pr -> Zweig + Pull Request (nur einmal je Zweig), vorher Spiegel-Upload
 #   fehler                          -> Issue "PHP <version>: Probe fehlgeschlagen" (nur einmal je Version)
 #
 # Braucht: gh (GH_TOKEN), git; laeuft im Repo-Ordner.
@@ -36,15 +36,30 @@ if ($env:NUR_PROBE -eq "true") {
     return
 }
 
+# Dateien ins eigene Release pakete-<Datum> laden (Spiegel), bevor manifest.json darauf zeigt.
+function Spiegeln($Liste) {
+    foreach ($s in @($Liste)) {
+        & gh release view $s.tag *> $null
+        if ($LASTEXITCODE -ne 0) {
+            Gh-Aufruf @("release", "create", $s.tag, "--title", $s.tag, "--notes", "Unveraenderte Kopien von Paketen, deren Anbieter alte Builds nicht dauerhaft anbieten. Automatisch angelegt vom Lauf Stack pruefen.") | Out-Null
+        }
+        Gh-Aufruf @("release", "upload", $s.tag, $s.pfad, "--clobber") | Out-Null
+        Write-Host "Gespiegelt: $($s.datei) -> Release $($s.tag)"
+    }
+}
+
 if ($zus.geaendert) {
     git config user.name  "github-actions[bot]"
     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
     $nachricht = "Automatisch festgelegt: $($zus.titel)"
     $info = Join-Path $ErgebnisOrdner "info.md"
 
-    if ($auto) {
+    if ($auto -and -not $zus.immer_pr) {
+        Spiegeln $zus.spiegel
         Git-Aufruf @("add", "manifest.json")
         Git-Aufruf @("commit", "-q", "-m", $nachricht)
+        # Der PHP-Teil kann im selben Lauf schon gepusht haben
+        Git-Aufruf @("pull", "-q", "--rebase", "origin", "main")
         Git-Aufruf @("push", "origin", "HEAD:main")
         $text = "Neue Versionen sind in ``manifest.json`` festgelegt und gelten ab der naechsten taeglichen Pruefung bei allen Installationen.`n`n" + (Get-Content $bericht -Raw) + "`n@furrerservices (nur zur Info, nichts zu tun)"
         [IO.File]::WriteAllText($info, $text)
@@ -57,11 +72,15 @@ if ($zus.geaendert) {
         if ($vorhanden) {
             Write-Host "Zweig $zweig existiert schon (Pull Request offen oder abgelehnt) - nichts zu tun."
         } else {
+            Spiegeln $zus.spiegel
             Git-Aufruf @("checkout", "-q", "-b", $zweig)
             Git-Aufruf @("add", "manifest.json")
             Git-Aufruf @("commit", "-q", "-m", $nachricht)
             Git-Aufruf @("push", "-q", "origin", $zweig)
-            $text = (Get-Content $bericht -Raw) + "`nMergen = Version festlegen. Danach wie bisher in ``stack_versionen.json`` (Interlake-Repo) nachfuehren, bis Interlake die Version selbst einspielt (briefing 225, Etappe 2).`n`n@furrerservices"
+            $hinweis = "Mergen = Version festlegen."
+            if ($zus.immer_pr) { $hinweis += " **Muss von Hand freigegeben werden** (siehe oben: keine Anbieter-Pruefsumme bzw. anderer Compiler)." }
+            if ($zus.bereich -eq "php") { $hinweis += " Danach wie bisher in ``stack_versionen.json`` (Interlake-Repo) nachfuehren, bis Interlake die Version selbst einspielt (briefing 225, Etappe 2)." }
+            $text = (Get-Content $bericht -Raw) + "`n$hinweis`n`n@furrerservices"
             [IO.File]::WriteAllText($info, $text)
             try {
                 $url = Gh-Aufruf @("pr", "create", "--base", "main", "--head", $zweig, "--title", $zus.titel, "--body-file", $info)
@@ -78,10 +97,14 @@ if ($zus.geaendert) {
 }
 
 foreach ($f in @($zus.fehler)) {
-    $version = ($f -split ':')[0]   # "PHP 8.5.13"
-    $titel = "${version}: Probe fehlgeschlagen"
+    # Titel = Teil vor dem ersten ":" ("PHP 8.5.13", "Apache 2.4.70 (...)") -> einmal je Version.
+    # Ohne Versionsnummer (z.B. "Apache: Seite umgebaut") hoechstens einmal im Monat.
+    $was = ($f -split ':')[0]
+    if ($was -notmatch '\d') { $was += " ($((Get-Date).ToString('yyyy-MM')))" }
+    $titel = "${was}: Probe fehlgeschlagen"
+    if ($titel.Length -gt 120) { $titel = $titel.Substring(0, 117) + "..." }
     if (Issue-Gibt-Es $titel) { Write-Host "Issue '$titel' gibt es schon."; continue }
-    $text = "Die Version wurde **nicht** festgelegt, ``manifest.json`` ist unveraendert. Kein Zeitdruck: alle Installationen laufen mit der bisherigen Version weiter.`n`n``````n$f`n```````n`nLauf: https://github.com/$repo/actions/runs/$env:GITHUB_RUN_ID`n`n@furrerservices"
+    $text = "Wurde **nicht** festgelegt, ``manifest.json`` ist dafuer unveraendert. Kein Zeitdruck: alle Installationen laufen mit der bisherigen Version weiter.`n`n``````n$f`n```````n`nLauf: https://github.com/$repo/actions/runs/$env:GITHUB_RUN_ID`n`n@furrerservices"
     $datei = Join-Path $ErgebnisOrdner "fehler.md"
     [IO.File]::WriteAllText($datei, $text)
     Gh-Aufruf @("issue", "create", "--title", $titel, "--body-file", $datei) | Out-Null

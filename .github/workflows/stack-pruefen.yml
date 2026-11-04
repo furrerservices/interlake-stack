@@ -1,12 +1,14 @@
-# Taeglich neue PHP-Versionen pruefen und in manifest.json festlegen (briefing §225 im Interlake-Repo).
+# Taeglich neue Versionen von PHP und Apache Lounge (httpd + mod_fcgid) pruefen und in
+# manifest.json festlegen (briefing §225/§226 im Interlake-Repo).
 #
 # Repo-Variable AUTO_UEBERNEHMEN (Settings > Secrets and variables > Actions > Variables):
 #   "ja"   -> gepruefte Versionen direkt auf main (gilt am naechsten Tag bei allen Installationen)
 #   sonst  -> Pull Request zum Mergen von Hand (Uebergang, bis Interlake die Version selbst einspielt)
-# Bei Fehlschlag einer Probe: Issue "PHP ...: Probe fehlgeschlagen" (manifest.json bleibt unveraendert).
+# mod_fcgid und Compiler-Wechsel immer als Pull Request (keine Anbieter-Pruefsumme bzw. vc_redist).
+# Bei Fehlschlag einer Probe: Issue (manifest.json bleibt dafuer unveraendert).
 # GitHub schickt fuer neue Pull Requests und Issues eine Mail an den Repo-Inhaber.
 
-name: PHP pruefen
+name: Stack pruefen
 
 on:
   schedule:
@@ -57,11 +59,43 @@ jobs:
         shell: pwsh
         run: |
           $b = "$env:RUNNER_TEMP\ergebnis\bericht.md"
-          if (Test-Path $b) { Get-Content $b | Add-Content $env:GITHUB_STEP_SUMMARY }
+          if (Test-Path $b) { "## PHP" | Add-Content $env:GITHUB_STEP_SUMMARY; Get-Content $b | Add-Content $env:GITHUB_STEP_SUMMARY }
+
+  apache:
+    needs: php
+    if: always()          # auch pruefen, wenn der PHP-Teil scheitert
+    runs-on: windows-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4   # frischer Stand: enthaelt einen PHP-Commit von eben
+
+      - name: Pruefen und Probeinstallation
+        shell: pwsh
+        run: |
+          $nurProbe = '${{ inputs.nur_probe }}' -eq 'true'
+          ./werkzeuge/apache_pruefen.ps1 -ManifestPfad manifest.json -Repo "${{ github.repository }}" `
+            -ArbeitsOrdner "$env:RUNNER_TEMP\stack" -ErgebnisOrdner "$env:RUNNER_TEMP\ergebnis" `
+            -VcRedistInstallieren -NurProbe:$nurProbe
+
+      - name: Ergebnis uebernehmen bzw. melden
+        shell: pwsh
+        env:
+          AUTO_UEBERNEHMEN: ${{ vars.AUTO_UEBERNEHMEN }}
+          NUR_PROBE: ${{ inputs.nur_probe }}
+        run: ./werkzeuge/ergebnis_melden.ps1 -ErgebnisOrdner "$env:RUNNER_TEMP\ergebnis"
+
+      - name: Bericht
+        if: always()
+        shell: pwsh
+        run: |
+          $b = "$env:RUNNER_TEMP\ergebnis\bericht.md"
+          if (Test-Path $b) { "## Apache" | Add-Content $env:GITHUB_STEP_SUMMARY; Get-Content $b | Add-Content $env:GITHUB_STEP_SUMMARY }
 
       # GitHub schaltet geplante Laeufe in Repos ohne Aktivitaet nach 60 Tagen ab.
       # Das erneute Aktivieren ueber die API setzt diese Frist zurueck.
       - name: Lauf aktiv halten
         if: github.event_name == 'schedule'
         shell: pwsh
-        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/php-pruefen.yml/enable"
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/stack-pruefen.yml/enable"
