@@ -10,14 +10,35 @@ Festgelegte Versionen der Programme, die eine Interlake-Installation unter Windo
   nicht dauerhaft anbieten (Apache Lounge, mod_fcgid) oder zeitweise nicht erreichbar sind (NSSM).
   PHP, MariaDB, MinGit, Composer, CA-Bündel und mkcert werden direkt beim Anbieter geladen (dauerhafte Archiv-Links).
 
-## Neue Version festlegen
+## PHP: automatisch geprüft (GitHub-Lauf „PHP pruefen“)
+
+Täglich um 04:17 UTC (`.github/workflows/php-pruefen.yml`, Skript `werkzeuge/php_pruefen.ps1`):
+
+1. Neueste Version je festgelegter Reihe aus `releases.json` von downloads.php.net (NTS x64, nur gleiche Reihe;
+   auch Windows-Neubauten wie `8.3.36-1`).
+2. Download, SHA-256 gegen die Angabe von downloads.php.net.
+3. Probeinstallation auf einem frischen Windows: `php.ini` wie `install_production.ps1` (gleiche Erweiterungen,
+   OPcache), `php -m`, dann Apache + mod_fcgid aus diesem Manifest starten und eine Testseite über `php-cgi` abrufen.
+4. Bestanden → `manifest.json` anpassen. `version` = Basisversion (so meldet sich PHP), `build` = Windows-Build,
+   `sicherheit` = Sicherheits-Release laut php.net.
+
+Was danach passiert, steuert die Repo-Variable **`AUTO_UEBERNEHMEN`** (Settings › Secrets and variables › Actions › Variables):
+
+| Wert | Ergebnis |
+|---|---|
+| `ja` | direkt auf `main`, Info-Issue (geschlossen, nur für die Mail) |
+| leer/anders | Pull Request zum Mergen von Hand (Übergang, bis Interlake die Version selbst einspielt) |
+
+Fällt eine Probe durch: Issue „PHP x.y.z: Probe fehlgeschlagen“ (einmal je Version), `manifest.json` bleibt unverändert.
+Von Hand starten: Actions › PHP pruefen › Run workflow (Häkchen „Nur Probeinstallation“ prüft die festgelegten Versionen, ändert nichts).
+Lokal: `powershell -ExecutionPolicy Bypass -File werkzeuge\php_pruefen.ps1 -NurProbe`.
+
+## Andere Pakete: Neue Version von Hand festlegen
 
 1. Datei beim Anbieter laden, SHA-256 mit der Angabe des Anbieters vergleichen (wo vorhanden).
 2. Falls gespiegelt: als Asset in ein neues Release `pakete-<Datum>` laden.
 3. Eintrag in `manifest.json` anpassen (`version`, `datei`, `urls`, `sha256`, `festgelegt_am`, `grund`), `stand` nachführen.
 4. Zuerst auf dem Testrechner installieren, erst dann bei der Kundin.
-
-Keine automatischen Updates: Interlake meldet höchstens, dass eine neue festgelegte Version vorliegt.
 
 ## Lizenzen
 
