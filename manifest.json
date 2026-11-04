@@ -1,6 +1,6 @@
 {
     "schema": 1,
-    "stand": "2026-10-23",
+    "stand": "2026-11-04",
     "_hinweis": "Von uns festgelegte Versionen aller Pakete, die eine Interlake-Installation braucht. Gelesen von install_production.ps1 (Interlake-Repo). Jede Datei wird nach dem Download per SHA-256 geprueft; urls werden der Reihe nach versucht (zuerst unser Spiegel, dann der Anbieter). Neue Version: Datei als Release-Asset in dieses Repo laden (falls gespiegelt), Eintrag hier anpassen, festgelegt_am und grund nachfuehren, zuerst auf dem Testrechner pruefen.",
     "vc_redist": {
         "mindestversion": "14.51.36247.0",
@@ -13,36 +13,42 @@
             "reihen": {
                 "8.3": {
                     "version": "8.3.36",
-                    "datei": "php-8.3.36-nts-Win32-vs16-x64.zip",
+                    "build": "8.3.36-1",
+                    "datei": "php-8.3.36-1-nts-Win32-vs16-x64.zip",
                     "urls": [
-                        "https://downloads.php.net/~windows/releases/php-8.3.36-nts-Win32-vs16-x64.zip",
-                        "https://downloads.php.net/~windows/releases/archives/php-8.3.36-nts-Win32-vs16-x64.zip"
+                        "https://downloads.php.net/~windows/releases/php-8.3.36-1-nts-Win32-vs16-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.3.36-1-nts-Win32-vs16-x64.zip"
                     ],
-                    "sha256": "3c9242622c7402b47c38d2ec2ed779cef3a290fd6f2bde6c35f9c482699e7900",
-                    "festgelegt_am": "2026-10-22",
-                    "grund": "Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                    "sha256": "1a097d52b7a68622cdc723073b61cc70caf79c941218ff65b2d8441dbc6b10d4",
+                    "festgelegt_am": "2026-11-04",
+                    "sicherheit": false,
+                    "grund": "Windows-Neubau. Automatisch festgelegt (PHP 8.3.36 -> 8.3.36-1); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.69 + mod_fcgid bestanden. Bisher: Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
                 },
                 "8.4": {
                     "version": "8.4.27",
-                    "datei": "php-8.4.27-nts-Win32-vs17-x64.zip",
+                    "build": "8.4.27-1",
+                    "datei": "php-8.4.27-1-nts-Win32-vs17-x64.zip",
                     "urls": [
-                        "https://downloads.php.net/~windows/releases/php-8.4.27-nts-Win32-vs17-x64.zip",
-                        "https://downloads.php.net/~windows/releases/archives/php-8.4.27-nts-Win32-vs17-x64.zip"
+                        "https://downloads.php.net/~windows/releases/php-8.4.27-1-nts-Win32-vs17-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.4.27-1-nts-Win32-vs17-x64.zip"
                     ],
-                    "sha256": "93bd8a815a52156606fb906d0573437908c61f96e2cc52c03a51e36a41bf5236",
-                    "festgelegt_am": "2026-10-22",
-                    "grund": "Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                    "sha256": "dbae154a0a89791f36c3d48e68bae797878333e7d6cb5721e74617de59b63ab7",
+                    "festgelegt_am": "2026-11-04",
+                    "sicherheit": false,
+                    "grund": "Windows-Neubau. Automatisch festgelegt (PHP 8.4.27 -> 8.4.27-1); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.69 + mod_fcgid bestanden. Bisher: Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
                 },
                 "8.5": {
                     "version": "8.5.12",
-                    "datei": "php-8.5.12-nts-Win32-vs17-x64.zip",
+                    "build": "8.5.12-1",
+                    "datei": "php-8.5.12-1-nts-Win32-vs17-x64.zip",
                     "urls": [
-                        "https://downloads.php.net/~windows/releases/php-8.5.12-nts-Win32-vs17-x64.zip",
-                        "https://downloads.php.net/~windows/releases/archives/php-8.5.12-nts-Win32-vs17-x64.zip"
+                        "https://downloads.php.net/~windows/releases/php-8.5.12-1-nts-Win32-vs17-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.5.12-1-nts-Win32-vs17-x64.zip"
                     ],
-                    "sha256": "2ab242af38d76bdf417cde5ec048b1bcd76a5a40f39a3d15d5f046f38571c477",
-                    "festgelegt_am": "2026-10-22",
-                    "grund": "Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                    "sha256": "2a36a2edcb7a5b9252f638fd5e4cf84d7f6e066092654220dc0b63e5cf4e9723",
+                    "festgelegt_am": "2026-11-04",
+                    "sicherheit": false,
+                    "grund": "Windows-Neubau. Automatisch festgelegt (PHP 8.5.12 -> 8.5.12-1); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.69 + mod_fcgid bestanden. Bisher: Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
                 }
             }
         },
