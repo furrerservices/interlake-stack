@@ -53,17 +53,17 @@
             }
         },
         "apache": {
-            "version": "2.4.69",
-            "build": "261002",
-            "datei": "httpd-2.4.69-261002-Win64-VS18.zip",
+            "version": "2.4.71",
+            "build": "261112",
+            "datei": "httpd-2.4.71-261112-Win64-VS18.zip",
             "urls": [
-                "https://github.com/furrerservices/interlake-stack/releases/download/pakete-2026-11-04/httpd-2.4.69-261002-Win64-VS18.zip",
-                "https://www.apachelounge.com/download/VS18/binaries/httpd-2.4.69-261002-Win64-VS18.zip"
+                "https://github.com/furrerservices/interlake-stack/releases/download/pakete-2026-11-12/httpd-2.4.71-261112-Win64-VS18.zip",
+                "https://www.apachelounge.com/download/VS18/binaries/httpd-2.4.71-261112-Win64-VS18.zip"
             ],
-            "sha256": "77d715d0d9cee731e2251e7ddc2090a7a8e6d41fedef2e9827cd918593c5a652",
-            "festgelegt_am": "2026-11-04",
+            "sha256": "44961a929dff16b767b3adbcea55760a942a00239b2891dc55806be34029e1fc",
+            "festgelegt_am": "2026-11-12",
             "sicherheit": false,
-            "grund": "Automatisch festgelegt (stiller Neubau unter gleichem Namen: httpd-2.4.69-261002-Win64-VS18.zip -> httpd-2.4.69-261002-Win64-VS18.zip); GPG-Signatur Apache Lounge und SHA-256 laut .txt geprueft, Probe mit PHP 8.3.36, 8.4.27, 8.5.12 bestanden."
+            "grund": "Automatisch festgelegt (neue Version: httpd-2.4.69-261002-Win64-VS18.zip -> httpd-2.4.71-261112-Win64-VS18.zip); GPG-Signatur Apache Lounge und SHA-256 laut .txt geprueft, Probe mit PHP 8.3.36, 8.4.27, 8.5.12 bestanden."
         },
         "mod_fcgid": {
             "version": "2.3.10",
