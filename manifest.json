@@ -1,6 +1,6 @@
 {
     "schema": 1,
-    "stand": "2026-11-04",
+    "stand": "2026-11-16",
     "_hinweis": "Von uns festgelegte Versionen aller Pakete, die eine Interlake-Installation braucht. Gelesen von install_production.ps1 (Interlake-Repo). Jede Datei wird nach dem Download per SHA-256 geprueft; urls werden der Reihe nach versucht (zuerst unser Spiegel, dann der Anbieter). Neue Version: Datei als Release-Asset in dieses Repo laden (falls gespiegelt), Eintrag hier anpassen, festgelegt_am und grund nachfuehren, zuerst auf dem Testrechner pruefen.",
     "vc_redist": {
         "mindestversion": "14.51.36247.0",
@@ -77,14 +77,14 @@
             "grund": "Erstaufnahme; Apache Lounge veroeffentlicht fuer Module keine Pruefsumme (beim ersten Download gemessen). Gespiegelt wie Apache."
         },
         "mariadb": {
-            "version": "12.3.3",
-            "datei": "mariadb-12.3.3-winx64.msi",
+            "version": "12.3.4",
+            "datei": "mariadb-12.3.4-winx64.msi",
             "urls": [
-                "https://archive.mariadb.org/mariadb-12.3.3/winx64-packages/mariadb-12.3.3-winx64.msi"
+                "https://archive.mariadb.org/mariadb-12.3.4/winx64-packages/mariadb-12.3.4-winx64.msi"
             ],
-            "sha256": "811a38a862c1c55325b6ba8a757b381923e51dee4fe3cde95887b0ae2490c02d",
-            "festgelegt_am": "2026-10-23",
-            "grund": "Erstaufnahme; LTS-Reihe 12.3 (Support bis 2029-06). Pruefsumme aus der MariaDB-Download-API, archive.mariadb.org ist dauerhaft."
+            "sha256": "5defb68d4d899dbd0900759af6cbe01a1dbeaf6b2322134c8fd4793c9b88ecac",
+            "festgelegt_am": "2026-11-16",
+            "grund": "Patch in der LTS-Reihe 12.3 (12.3.3 -> 12.3.4): Fixes bei InnoDB-Crash-Recovery (Stromausfall), Windows-Dienststart, ALTER/OPTIMIZE blaehen Dateien nicht mehr auf, Heap-Overflow in JSON_CONTAINS_PATH. Pruefsumme laut sha256sums.txt, GPG-Signatur MariaDB Signing Key (177F4010...C74CD1D8) geprueft. Von Hand festgelegt; Download-API meldete am 2026-11-16 noch 12.3.3."
         },
         "nssm": {
             "version": "2.24",
