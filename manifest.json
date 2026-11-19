@@ -12,43 +12,43 @@
             "standard_reihe": "8.3",
             "reihen": {
                 "8.3": {
-                    "version": "8.3.36",
-                    "build": "8.3.36-1",
-                    "datei": "php-8.3.36-1-nts-Win32-vs16-x64.zip",
+                    "version": "8.3.37",
+                    "build": "8.3.37",
+                    "datei": "php-8.3.37-nts-Win32-vs16-x64.zip",
                     "urls": [
-                        "https://downloads.php.net/~windows/releases/php-8.3.36-1-nts-Win32-vs16-x64.zip",
-                        "https://downloads.php.net/~windows/releases/archives/php-8.3.36-1-nts-Win32-vs16-x64.zip"
+                        "https://downloads.php.net/~windows/releases/php-8.3.37-nts-Win32-vs16-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.3.37-nts-Win32-vs16-x64.zip"
                     ],
-                    "sha256": "1a097d52b7a68622cdc723073b61cc70caf79c941218ff65b2d8441dbc6b10d4",
-                    "festgelegt_am": "2026-11-04",
-                    "sicherheit": false,
-                    "grund": "Windows-Neubau. Automatisch festgelegt (PHP 8.3.36 -> 8.3.36-1); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.69 + mod_fcgid bestanden. Bisher: Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                    "sha256": "38808a798485e1c0938dfcce7e942131415fc6c7834f83a5a85a4c4edb5539d6",
+                    "festgelegt_am": "2026-11-19",
+                    "sicherheit": true,
+                    "grund": "Sicherheits-Release laut php.net; Automatisch festgelegt (PHP 8.3.36-1 -> 8.3.37); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.71 + mod_fcgid bestanden."
                 },
                 "8.4": {
-                    "version": "8.4.27",
-                    "build": "8.4.27-1",
-                    "datei": "php-8.4.27-1-nts-Win32-vs17-x64.zip",
+                    "version": "8.4.28",
+                    "build": "8.4.28",
+                    "datei": "php-8.4.28-nts-Win32-vs17-x64.zip",
                     "urls": [
-                        "https://downloads.php.net/~windows/releases/php-8.4.27-1-nts-Win32-vs17-x64.zip",
-                        "https://downloads.php.net/~windows/releases/archives/php-8.4.27-1-nts-Win32-vs17-x64.zip"
+                        "https://downloads.php.net/~windows/releases/php-8.4.28-nts-Win32-vs17-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.4.28-nts-Win32-vs17-x64.zip"
                     ],
-                    "sha256": "dbae154a0a89791f36c3d48e68bae797878333e7d6cb5721e74617de59b63ab7",
-                    "festgelegt_am": "2026-11-04",
-                    "sicherheit": false,
-                    "grund": "Windows-Neubau. Automatisch festgelegt (PHP 8.4.27 -> 8.4.27-1); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.69 + mod_fcgid bestanden. Bisher: Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                    "sha256": "c1f9280588b7b6ad7b518969022f0b0175f106fab9d0639ad0e4ce7cd47ac1ed",
+                    "festgelegt_am": "2026-11-19",
+                    "sicherheit": true,
+                    "grund": "Sicherheits-Release laut php.net; Automatisch festgelegt (PHP 8.4.27-1 -> 8.4.28); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.71 + mod_fcgid bestanden."
                 },
                 "8.5": {
-                    "version": "8.5.12",
-                    "build": "8.5.12-1",
-                    "datei": "php-8.5.12-1-nts-Win32-vs17-x64.zip",
+                    "version": "8.5.13",
+                    "build": "8.5.13",
+                    "datei": "php-8.5.13-nts-Win32-vs17-x64.zip",
                     "urls": [
-                        "https://downloads.php.net/~windows/releases/php-8.5.12-1-nts-Win32-vs17-x64.zip",
-                        "https://downloads.php.net/~windows/releases/archives/php-8.5.12-1-nts-Win32-vs17-x64.zip"
+                        "https://downloads.php.net/~windows/releases/php-8.5.13-nts-Win32-vs17-x64.zip",
+                        "https://downloads.php.net/~windows/releases/archives/php-8.5.13-nts-Win32-vs17-x64.zip"
                     ],
-                    "sha256": "2a36a2edcb7a5b9252f638fd5e4cf84d7f6e066092654220dc0b63e5cf4e9723",
-                    "festgelegt_am": "2026-11-04",
-                    "sicherheit": false,
-                    "grund": "Windows-Neubau. Automatisch festgelegt (PHP 8.5.12 -> 8.5.12-1); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.69 + mod_fcgid bestanden. Bisher: Sicherheits-Release CVE-2026-109618 / CVE-2026-109619 (Remote-Code-Ausfuehrung ohne Login)"
+                    "sha256": "4ae6c72bc0ca4f6b8f3e9b107874bae0135699f3aabe6c26a1f6103d040eea97",
+                    "festgelegt_am": "2026-11-19",
+                    "sicherheit": true,
+                    "grund": "Sicherheits-Release laut php.net; Automatisch festgelegt (PHP 8.5.12-1 -> 8.5.13); Pruefsumme laut downloads.php.net, Probeinstallation mit Apache 2.4.71 + mod_fcgid bestanden."
                 }
             }
         },
